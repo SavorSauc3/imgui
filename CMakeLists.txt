@@ -34,14 +34,22 @@ target_include_directories(imgui PUBLIC
     ${IncludeDir_vulkanSDK}
 )
 
+# Link libraries
+target_link_libraries(imgui PUBLIC
+    glfw
+    vulkan
+)
+
 # Set compiler options based on the system
 if(WIN32)
     target_compile_features(imgui PRIVATE cxx_std_20)
+    target_link_libraries(imgui PRIVATE glfw ${LibDir_vulkanSDK}/vulkan-1.lib)
     set_target_properties(imgui PROPERTIES
         MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 elseif(UNIX)
     target_compile_options(imgui PRIVATE -fPIC)
     target_compile_features(imgui PRIVATE cxx_std_20)
+    target_link_libraries(imgui PRIVATE glfw vulkan)
 endif()
 
 # Set configurations
